@@ -61,7 +61,12 @@ public class Spiel {
 	}
 	
 	public void starteNeuesSpiel() {
+		score = 0;
 		
+		for(int i = 0; i < 10; i++) {
+			pfeil[i].setStep(0);
+			pfeil[i].setPos(50, 400+10*i);
+		}
 	}
 	
 	public void laden() {
