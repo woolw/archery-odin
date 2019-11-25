@@ -10,11 +10,19 @@ public class Figur {
 	}
 	
 	public void auf() {
-		
+		y--;
 	}
 	
 	public void ab() {
-		
+		y++;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
 	}
 	
 }

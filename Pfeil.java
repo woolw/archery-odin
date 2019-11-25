@@ -12,7 +12,7 @@ public class Pfeil {
 		
 	}
 	
-	public void setSetp(int step) {
+	public void setStep(int step) {
 		this.step = step;
 	}
 	

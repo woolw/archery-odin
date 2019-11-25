@@ -9,6 +9,7 @@ public class Spiel {
 	private BallFeld ballFeld;
 
 	private boolean geladen;
+	private boolean geschossen;
 	private int pfeilNr;
 	private int score;
 	
@@ -17,6 +18,9 @@ public class Spiel {
 	}
 	
 	public Spiel() {
+		geschossen = false;
+		geladen = false;
+		
 		Spiel spiel = this;
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -61,19 +65,28 @@ public class Spiel {
 	}
 	
 	public void laden() {
+		pfeilNr++;
+		geladen = true;
+		pfeil[pfeilNr].setPos(figur.getX(), figur.getY());
 		
 	}
 	
-	public void schliessen() {
-		
+	public void schiessen() {
+		geschossen = true;
 	}
 	
 	public void auf_Figur() {
 		figur.auf();
+		if(geladen) {
+			pfeil[pfeilNr].setPos(figur.getX(), figur.getY());
+		}
 	}
 	
 	public void ab_Figur() {
 		figur.ab();
+		if(geladen) {
+			pfeil[pfeilNr].setPos(figur.getX(), figur.getY());
+		}
 	}
 	
 	private void aktualisiereBild() {
@@ -81,7 +94,9 @@ public class Spiel {
 	}
 	
 	private void bewegePfeile() {
-		pfeil[pfeilNr].bewegen();
-		ballFeld.pruefeTreffer(pfeil[pfeilNr].getPosX(), pfeil[pfeilNr].getPosY());
+		if(geschossen) {
+			pfeil[pfeilNr].bewegen();
+			ballFeld.pruefeTreffer(pfeil[pfeilNr].getPosX(), pfeil[pfeilNr].getPosY());
+		}
 	}
 }

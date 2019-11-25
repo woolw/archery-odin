@@ -1,15 +1,18 @@
 
 public class Ball {
 	
-	private int step,x,y;
+	private int step,x,y,size;
 	private boolean popped;
 	
 	public Ball() {
-		
+		size = 20;
+		step = 0;
+		x = 0;
+		y = 1500;
 	}
 	
 	public void bewegen() {
-		
+		y+=step;
 	}
 	
 	public boolean getPopped() {
@@ -38,5 +41,9 @@ public class Ball {
 
 	public int getPosY() {
 		return y;
+	}
+	
+	public int getSize() {
+		return size;
 	}
 }
