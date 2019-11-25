@@ -9,7 +9,7 @@ public class Pfeil {
 	}
 	
 	public void bewegen() {
-		
+		x +=step;
 	}
 	
 	public void setStep(int step) {
