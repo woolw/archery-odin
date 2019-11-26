@@ -29,8 +29,15 @@ public class GUI extends JFrame {
 	public GUI(int width, int height, Spiel spiel) {
 		this.spiel = spiel;
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, width, height);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
 		pfeilIcon = new ImageIcon("pfeil.png");
-		figurIcon = new ImageIcon("figur.png");
+		figurIcon = new ImageIcon("kenny.png");
 		ballIcon = new ImageIcon("ball.png");
 		
 		pfeil = new JLabel[10];
@@ -39,25 +46,26 @@ public class GUI extends JFrame {
 		for(int i=0;i<pfeil.length;i++) {
 			pfeil[i] = new JLabel();
 			pfeil[i].setBounds(50, 400+10*i, pfeilIcon.getIconWidth(), pfeilIcon.getIconHeight());
+			pfeil[i].setIcon(pfeilIcon);
+			pfeil[i].setEnabled(true);
 			contentPane.add(pfeil[i]);
 		}
 		
 		figur = new JLabel();
 		figur.setBounds(100, 120, figurIcon.getIconWidth(), figurIcon.getIconHeight());
+		figur.setIcon(figurIcon);
+		figur.setEnabled(true);
 		contentPane.add(figur);
+		
+		System.out.println(figurIcon.getIconWidth()+" "+figurIcon.getIconHeight());
 		
 		for(int i=0;i<ball.length;i++) {
 			ball[i] = new JLabel();
 			ball[i].setBounds(0, 1500, ballIcon.getIconWidth(), ballIcon.getIconHeight());
+			ball[i].setIcon(ballIcon);
+			ball[i].setEnabled(true);
 			contentPane.add(ball[i]);
 		}
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, width, height);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		Action neuePfeile = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
