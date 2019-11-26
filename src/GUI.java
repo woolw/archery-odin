@@ -43,9 +43,9 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		pfeilIcon = new ImageIcon("resources\\pfeil.png");
-		figurIcon = new ImageIcon("resources\\kenny.png");
-		ballIcon = new ImageIcon("resources\\ball.png");
+		pfeilIcon = new ImageIcon(getClass().getResource("/resources/pfeil.png"));
+		figurIcon = new ImageIcon(getClass().getResource("/resources/kenny.png"));
+		ballIcon = new ImageIcon(getClass().getResource("/resources/ball.png"));
 		
 		pfeil = new JLabel[10];
 		ball = new JLabel[30];
@@ -126,12 +126,6 @@ public class GUI extends JFrame {
 		    }
 		};
 		
-		Action tick = new AbstractAction() {
-		    public void actionPerformed(ActionEvent e) {
-		        spiel.empfZeitereignis();
-		    }
-		};
-		
 		
 		this.contentPane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0, false), "neuePfeile");
 		this.contentPane.getActionMap().put("neuePfeile", neuePfeile);
@@ -153,9 +147,6 @@ public class GUI extends JFrame {
 		
 		this.contentPane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "ab_aus");
 		this.contentPane.getActionMap().put("ab_aus", ab_aus);
-		
-		this.contentPane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0, false), "tick");
-		this.contentPane.getActionMap().put("tick", tick);
 	}
 	
 	public void aktualisiereFigur(int x, int y) {
