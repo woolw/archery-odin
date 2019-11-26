@@ -43,9 +43,9 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		pfeilIcon = new ImageIcon("src\\resources\\pfeil.png");
-		figurIcon = new ImageIcon("src\\resources\\kenny.png");
-		ballIcon = new ImageIcon("src\\resources\\ball.png");
+		pfeilIcon = new ImageIcon("resources\\pfeil.png");
+		figurIcon = new ImageIcon("resources\\kenny.png");
+		ballIcon = new ImageIcon("resources\\ball.png");
 		
 		pfeil = new JLabel[10];
 		ball = new JLabel[30];
