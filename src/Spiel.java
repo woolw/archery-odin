@@ -1,5 +1,3 @@
-import java.awt.EventQueue;
-
 public class Spiel {
 	
 	private GUI gui;
