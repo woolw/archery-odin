@@ -9,11 +9,14 @@ public class Spiel {
 	private BallFeld ballFeld;
 
 	private boolean geladen;
-	private boolean geschossen;
 	private boolean auf_an = false;
 	private boolean ab_an = false;
 	private int pfeilNr;
 	private int score;
+	
+	private final int pfeilOffsetX = 72;
+	private final int pfeilOffsetY = 82;
+	private long pfeilZeit = 0;
 	
 	public static void main(String[] args) {
 		new Spiel();
@@ -48,7 +51,7 @@ public class Spiel {
 				figur.auf();
 			}
 			if(geladen) {
-				pfeil[pfeilNr].setPos(figur.getX()+55, figur.getY()+65);
+				pfeil[pfeilNr].setPos(figur.getX()+pfeilOffsetX, figur.getY()+pfeilOffsetY);
 			}
 		}
 		
@@ -57,7 +60,7 @@ public class Spiel {
 				figur.ab();
 			}
 			if(geladen) {
-				pfeil[pfeilNr].setPos(figur.getX()+55, figur.getY()+65);
+				pfeil[pfeilNr].setPos(figur.getX()+pfeilOffsetX, figur.getY()+pfeilOffsetY);
 			}
 		}
 		
@@ -77,7 +80,6 @@ public class Spiel {
 	public void starteNeuesSpiel() {
 		score = 0;
 		pfeilNr = -1;
-		geschossen = false;
 		geladen = false;
 		
 		figur = new Figur(100, 120, 150);
@@ -89,20 +91,20 @@ public class Spiel {
 	}
 	
 	public void laden() {
-		if(!geschossen && !geladen) {
+		if(System.currentTimeMillis() >= pfeilZeit+0.35*1000 && !geladen) {
 			if(pfeilNr < 9) {
 				pfeilNr++;
 				geladen = true;
-				pfeil[pfeilNr].setPos(figur.getX()+55, figur.getY()+65);
+				pfeil[pfeilNr].setPos(figur.getX()+pfeilOffsetX, figur.getY()+pfeilOffsetY);
 			}
 		}
 	}
 	
 	public void schiessen() {
 		if(pfeilNr >=0 && pfeilNr <= 10) {
-			geschossen = true;
 			geladen = false;
-			pfeil[pfeilNr].setStep(5);
+			pfeil[pfeilNr].setStep(12);
+			pfeilZeit = System.currentTimeMillis();
 		}
 	}
 	
@@ -126,12 +128,11 @@ public class Spiel {
 	}
 	
 	private void bewegePfeile() {
-		if(geschossen) {
-			pfeil[pfeilNr].bewegen();
-			ballFeld.pruefeTreffer(pfeil[pfeilNr].getPosX()+50, pfeil[pfeilNr].getPosY()+5);
-			if(pfeil[pfeilNr].getPosX() > 1050) {
-				geschossen = false;
-				pfeil[pfeilNr].setStep(0);
+		for(int i=0;i<pfeil.length;i++) {
+			pfeil[i].bewegen();
+			ballFeld.pruefeTreffer(pfeil[i].getPosX()+50, pfeil[i].getPosY()+5);
+			if(pfeil[i].getPosX() > 1050) {
+				pfeil[i].setStep(0);
 			}
 		}
 	}

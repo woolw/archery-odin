@@ -17,8 +17,8 @@ public class BallFeld {
 	public void starteBall(int z) {
 		if(ballNr != -1) {
 			ball[ballNr].setPosX(500+z);
-			ball[ballNr].setPosY(-10);
-			ball[ballNr].setStep(3);
+			ball[ballNr].setPosY(-40);
+			ball[ballNr].setStep((int)(Math.random()*2+3));
 			ball[ballNr].setPopped(false);
 		}
 		ballNr = nextBall();
@@ -28,7 +28,7 @@ public class BallFeld {
 		int id = -1;
 		
 		for(int i=0;i<ball.length;i++) {
-			if(!(ball[i].getPosY() >= -10 && ball[i].getPosY() <= 600)) {
+			if(!(ball[i].getPosY() >= -40 && ball[i].getPosY() <= 600)) {
 				id = i;
 				break;
 			}

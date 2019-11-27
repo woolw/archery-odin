@@ -13,6 +13,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Panel;
+import javax.swing.SwingConstants;
 
 public class GUI extends JFrame {
 
@@ -27,7 +29,7 @@ public class GUI extends JFrame {
 
 	private Icon pfeilIcon;
 	private Icon figurIcon;
-	private Icon ballIcon;
+	private Icon ballIcon[];
 
 	/**
 	 * Create the frame.
@@ -43,9 +45,13 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		ballIcon = new Icon[3];
+		
 		pfeilIcon = new ImageIcon(getClass().getResource("/resources/pfeil.png"));
 		figurIcon = new ImageIcon(getClass().getResource("/resources/kenny.png"));
-		ballIcon = new ImageIcon(getClass().getResource("/resources/ball.png"));
+		ballIcon[0] = new ImageIcon(getClass().getResource("/resources/ballong_blau.png"));
+		ballIcon[1] = new ImageIcon(getClass().getResource("/resources/ballong_rot.png"));
+		ballIcon[2] = new ImageIcon(getClass().getResource("/resources/ballong_gruen.png"));
 
 		pfeil = new JLabel[10];
 		ball = new JLabel[30];
@@ -70,16 +76,21 @@ public class GUI extends JFrame {
 		lblScore.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 		lblScore.setBounds(5, 531, 120, 30);
 		contentPane.add(lblScore);
+		
+		Panel panel = new Panel();
+		panel.setBackground(Color.ORANGE);
+		panel.setBounds(0, -5, width, 28);
+		contentPane.add(panel);
 
 		JLabel lblTooltips = new JLabel("ENTER = Laden                   SPACE = schie\u00DFen                   F2 = neue Pfeile");
+		lblTooltips.setVerticalAlignment(SwingConstants.TOP);
+		panel.add(lblTooltips);
 		lblTooltips.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-		lblTooltips.setBounds(250, 0, 535, 22);
-		contentPane.add(lblTooltips);
 
 		for(int i=0;i<ball.length;i++) {
 			ball[i] = new JLabel();
-			ball[i].setBounds(0, 1500, ballIcon.getIconWidth(), ballIcon.getIconHeight());
-			ball[i].setIcon(ballIcon);
+			ball[i].setBounds(0, 1500, ballIcon[0].getIconWidth(), ballIcon[0].getIconHeight());
+			ball[i].setIcon(ballIcon[(int)(Math.random()*3)]);
 			ball[i].setEnabled(true);
 			contentPane.add(ball[i]);
 		}
