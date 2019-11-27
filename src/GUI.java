@@ -26,6 +26,8 @@ public class GUI extends JFrame {
 	private JLabel figur;
 	private JLabel ball[];
 	private JLabel lblScore;
+	private JLabel lblTooltips;
+	private Panel panel;
 
 	private Icon pfeilIcon;
 	private Icon figurIcon;
@@ -40,12 +42,12 @@ public class GUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, width, height);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setBackground(Color.YELLOW);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		ballIcon = new Icon[3];
+		ballIcon = new Icon[spiel.getBallColorCount()];
 		
 		pfeilIcon = new ImageIcon(getClass().getResource("/resources/pfeil.png"));
 		figurIcon = new ImageIcon(getClass().getResource("/resources/kenny.png"));
@@ -53,8 +55,8 @@ public class GUI extends JFrame {
 		ballIcon[1] = new ImageIcon(getClass().getResource("/resources/ballong_rot.png"));
 		ballIcon[2] = new ImageIcon(getClass().getResource("/resources/ballong_gruen.png"));
 
-		pfeil = new JLabel[10];
-		ball = new JLabel[30];
+		pfeil = new JLabel[spiel.getPfeilCount()];
+		ball = new JLabel[spiel.getBallCount()];
 
 		for(int i=0;i<pfeil.length;i++) {
 			pfeil[i] = new JLabel();
@@ -70,27 +72,25 @@ public class GUI extends JFrame {
 		figur.setEnabled(true);
 		contentPane.add(figur);
 
-		lblScore = new JLabel("Score:");
+		lblScore = new JLabel("Score: 0");
 		lblScore.setForeground(Color.BLACK);
-		lblScore.setBackground(Color.RED);
-		lblScore.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		lblScore.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
 		lblScore.setBounds(5, 531, 120, 30);
 		contentPane.add(lblScore);
 		
-		Panel panel = new Panel();
+		panel = new Panel();
 		panel.setBackground(Color.ORANGE);
 		panel.setBounds(0, -5, width, 28);
 		contentPane.add(panel);
-
-		JLabel lblTooltips = new JLabel("ENTER = Laden                   SPACE = schie\u00DFen                   F2 = neue Pfeile");
-		lblTooltips.setVerticalAlignment(SwingConstants.TOP);
-		panel.add(lblTooltips);
-		lblTooltips.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+		
+				lblTooltips = new JLabel("W = Hoch             S = Runter             ENTER = Laden             SPACE = Schie\u00DFen             F2 = Neue Pfeile");
+				lblTooltips.setVerticalAlignment(SwingConstants.TOP);
+				panel.add(lblTooltips);
+				lblTooltips.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
 
 		for(int i=0;i<ball.length;i++) {
 			ball[i] = new JLabel();
 			ball[i].setBounds(0, 1500, ballIcon[0].getIconWidth(), ballIcon[0].getIconHeight());
-			ball[i].setIcon(ballIcon[(int)(Math.random()*3)]);
 			ball[i].setEnabled(true);
 			contentPane.add(ball[i]);
 		}
@@ -168,11 +168,29 @@ public class GUI extends JFrame {
 		pfeil[id].setLocation(x, y);
 	}
 
-	public void aktualisiereBall(int id, int x, int y) {
+	public void aktualisiereBall(int id, int x, int y, int colorID) {
 		ball[id].setLocation(x, y);
+		ball[id].setIcon(ballIcon[colorID]);
+		ball[id].setText(""+id);
 	}
 
 	public void aktualisiereScore(int score) {
 		lblScore.setText("Score: "+score);
+	}
+	
+	public int getPanelHeight() {
+		return panel.getHeight();
+	}
+	
+	public int getFigurSize() {
+		return figurIcon.getIconHeight();
+	}
+
+	public int getBallSize() {
+		return ballIcon[0].getIconHeight();
+	}
+
+	public int getPfeilSize() {
+		return pfeilIcon.getIconHeight();
 	}
 }

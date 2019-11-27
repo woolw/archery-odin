@@ -1,7 +1,7 @@
 
 public class Ball {
 	
-	private int step,x,y;
+	private int step,x,y,colorID;
 	private boolean popped;
 	
 	public Ball() {
@@ -41,5 +41,13 @@ public class Ball {
 
 	public int getPosY() {
 		return y;
+	}
+	
+	public void setColor(int colorID) {
+		this.colorID = colorID;
+	}
+	
+	public int getColor() {
+		return colorID;
 	}
 }

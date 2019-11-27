@@ -15,7 +15,17 @@ public class TimerClass{
 			@Override
 			public void run() {
 				spiel.empfZeitereignis();
+				timer.purge();
 			}	
 		}, intervall, intervall);
+	}
+	
+	public void pfeilDelay(int delay_ms) {
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				spiel.unlockPfeil();
+			}
+		}, delay_ms);
 	}
 }

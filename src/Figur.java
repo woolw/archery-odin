@@ -2,19 +2,21 @@
 public class Figur {
 	
 	private int x,y,size;
+	private final int speed;
 	
-	public Figur(int x, int y, int size) {
+	public Figur(int x, int y, int size, int speed) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
+		this.speed = speed;
 	}
 	
 	public void auf() {
-		y-=3;
+		y-=speed;
 	}
 	
 	public void ab() {
-		y+=3;
+		y+=speed;
 	}
 	
 	public int getX() {
@@ -23,6 +25,10 @@ public class Figur {
 	
 	public int getY() {
 		return y;
+	}
+
+	public int getSize() {
+		return size;
 	}
 	
 }

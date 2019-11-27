@@ -13,31 +13,36 @@ public class Spiel {
 	private boolean ab_an = false;
 	private int pfeilNr;
 	private int score;
+	private boolean pfeilLock;
 	
 	private final int pfeilOffsetX = 72;
 	private final int pfeilOffsetY = 82;
-	private long pfeilZeit = 0;
+	private final int pfeilVelocity = 14;
+	private final double pfeilCooldown = 0.4;
+	
+	private final int pfeilCount = 10;
+	private final int ballCount = 30;
+	private final int ballColorCount = 3;
+	
+	private final int figurVelocity = 6;
 	
 	public static void main(String[] args) {
 		new Spiel();
 	}
 	
 	public Spiel() {
+		
 		Spiel spiel = this;
 		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					gui = new GUI(1050,600,spiel);
-					gui.setVisible(true);
-
-					timer = new TimerClass(spiel);
-					timer.einstellen(20);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			gui = new GUI(1050,600,spiel);
+			gui.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		timer = new TimerClass(spiel);
+		timer.einstellen(20);
 		
 		starteNeuesSpiel();
 	}
@@ -47,7 +52,7 @@ public class Spiel {
 		bewegePfeile();
 		
 		if(auf_an) {
-			if(figur.getY() >= 0) {
+			if(figur.getY() > gui.getPanelHeight()) {
 				figur.auf();
 			}
 			if(geladen) {
@@ -56,7 +61,7 @@ public class Spiel {
 		}
 		
 		if(ab_an) {
-			if(figur.getY()+150 <= 560) {
+			if(figur.getY()+figur.getSize() < gui.getContentPane().getHeight() ) {
 				figur.ab();
 			}
 			if(geladen) {
@@ -82,17 +87,19 @@ public class Spiel {
 		pfeilNr = -1;
 		geladen = false;
 		
-		figur = new Figur(100, 120, 150);
-		ballFeld = new BallFeld();
-		pfeil = new Pfeil[10];
+		figur = new Figur(100, 120, 150, figurVelocity);
+		ballFeld = new BallFeld(gui.getBallSize(), ballCount, ballColorCount);
+		pfeil = new Pfeil[pfeilCount];
 		for(int i=0;i<pfeil.length;i++) {
-			pfeil[i] = new Pfeil(50, 400+10*i);
+			pfeil[i] = new Pfeil(50, 500-gui.getPfeilSize()*(pfeil.length-i));
 		}
 	}
 	
 	public void laden() {
-		if(System.currentTimeMillis() >= pfeilZeit+0.35*1000 && !geladen) {
-			if(pfeilNr < 9) {
+		if(!geladen) {
+			if(pfeilNr < pfeil.length-1) {
+				pfeilLock = true;
+				timer.pfeilDelay((int) (pfeilCooldown*1000));
 				pfeilNr++;
 				geladen = true;
 				pfeil[pfeilNr].setPos(figur.getX()+pfeilOffsetX, figur.getY()+pfeilOffsetY);
@@ -101,10 +108,9 @@ public class Spiel {
 	}
 	
 	public void schiessen() {
-		if(pfeilNr >=0 && pfeilNr <= 10) {
+		if(!pfeilLock && pfeilNr >=0 && pfeilNr <= pfeil.length) {
 			geladen = false;
-			pfeil[pfeilNr].setStep(12);
-			pfeilZeit = System.currentTimeMillis();
+			pfeil[pfeilNr].setStep(pfeilVelocity);
 		}
 	}
 	
@@ -118,10 +124,10 @@ public class Spiel {
 	
 	private void aktualisiereBild() {		
 		gui.aktualisiereFigur(figur.getX(), figur.getY());
-		for(int i=0;i<30;i++) {
-			gui.aktualisiereBall(i, ballFeld.getBallX(i), ballFeld.getBallY(i));
+		for(int i=0;i<ballFeld.getBallLength();i++) {
+			gui.aktualisiereBall(i, ballFeld.getBallX(i), ballFeld.getBallY(i), ballFeld.getBallColor(i));
 		}
-		for(int i=0;i<10;i++) {
+		for(int i=0;i<pfeil.length;i++) {
 			gui.aktualisierePfeil(i, pfeil[i].getPosX(), pfeil[i].getPosY());
 		}
 		gui.aktualisiereScore(score);
@@ -135,5 +141,21 @@ public class Spiel {
 				pfeil[i].setStep(0);
 			}
 		}
+	}
+
+	public void unlockPfeil() {
+		pfeilLock = false;
+	}
+
+	public int getPfeilCount() {
+		return pfeilCount;
+	}
+
+	public int getBallCount() {
+		return ballCount;
+	}
+
+	public int getBallColorCount() {
+		return ballColorCount;
 	}
 }
