@@ -1,3 +1,7 @@
+import java.awt.EventQueue;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 public class Spiel {
 	
 	private GUI gui;
@@ -5,16 +9,18 @@ public class Spiel {
 	private Figur figur;
 	private Pfeil[] pfeil;
 	private BallFeld ballFeld;
+	private Highscore highscore;
 
 	private boolean geladen;
+	private boolean gespannt;
 	private boolean auf_an = false;
 	private boolean ab_an = false;
 	private int pfeilNr;
 	private int score;
 	private boolean pfeilLock;
 	
-	private final int pfeilOffsetX = 72;
-	private final int pfeilOffsetY = 82;
+	private final int pfeilOffsetX = 65;
+	private final int pfeilOffsetY = 85;
 	private final int pfeilVelocity = 14;
 	private final double pfeilCooldown = 0.4;
 	
@@ -29,8 +35,13 @@ public class Spiel {
 	}
 	
 	public Spiel() {
-		
 		Spiel spiel = this;
+		
+		try {
+			highscore = new Highscore();
+		} catch (IOException | URISyntaxException e1) {
+			e1.printStackTrace();
+		}
 		
 		try {
 			gui = new GUI(1050,600,spiel);
@@ -39,8 +50,13 @@ public class Spiel {
 			e.printStackTrace();
 		}
 		
-		timer = new TimerClass(spiel);
-		timer.einstellen(20);
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				timer = new TimerClass(spiel);
+				timer.einstellen(20);
+			}
+		});
 		
 		starteNeuesSpiel();
 	}
@@ -86,7 +102,7 @@ public class Spiel {
 		geladen = false;
 		
 		figur = new Figur(100, 120, 150, figurVelocity);
-		ballFeld = new BallFeld(gui.getBallSize(), ballCount, ballColorCount);
+		ballFeld = new BallFeld(gui.getBallSize(), ballCount, gui.getBallCount());
 		pfeil = new Pfeil[pfeilCount];
 		for(int i=0;i<pfeil.length;i++) {
 			pfeil[i] = new Pfeil(50, 500-gui.getPfeilSize()*(pfeil.length-i));
@@ -121,7 +137,7 @@ public class Spiel {
 	}
 	
 	private void aktualisiereBild() {		
-		gui.aktualisiereFigur(figur.getX(), figur.getY());
+		gui.aktualisiereFigur(figur.getX(), figur.getY(), geladen);
 		for(int i=0;i<ballFeld.getBallLength();i++) {
 			gui.aktualisiereBall(i, ballFeld.getBallX(i), ballFeld.getBallY(i), ballFeld.getBallColor(i));
 		}
