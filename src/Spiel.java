@@ -1,6 +1,4 @@
 import java.awt.EventQueue;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class Spiel {
 	
