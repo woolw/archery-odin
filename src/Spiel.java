@@ -9,7 +9,6 @@ public class Spiel {
 	private Figur figur;
 	private Pfeil[] pfeil;
 	private BallFeld ballFeld;
-	private Highscore highscore;
 
 	private boolean geladen;
 	private boolean gespannt;
@@ -36,12 +35,6 @@ public class Spiel {
 	
 	public Spiel() {
 		Spiel spiel = this;
-		
-		try {
-			highscore = new Highscore();
-		} catch (IOException | URISyntaxException e1) {
-			e1.printStackTrace();
-		}
 		
 		try {
 			gui = new GUI(1050,600,spiel);
