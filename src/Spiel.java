@@ -9,7 +9,6 @@ public class Spiel {
 	private BallFeld ballFeld;
 
 	private boolean geladen;
-	private boolean gespannt;
 	private boolean auf_an = false;
 	private boolean ab_an = false;
 	private int pfeilNr;
@@ -24,6 +23,7 @@ public class Spiel {
 	private final int pfeilCount = 10;
 	private final int ballCount = 30;
 	private final int ballColorCount = 3;
+	private final int ballRate = 25;  //default 25; max 500
 	
 	private final int figurVelocity = 6;
 	
@@ -35,7 +35,7 @@ public class Spiel {
 		Spiel spiel = this;
 		
 		try {
-			gui = new GUI(1050,600,spiel);
+			gui = new GUI(1050,590,spiel);
 			gui.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class Spiel {
 			@Override
 			public void run() {
 				timer = new TimerClass(spiel);
-				timer.einstellen(20);
+				timer.einstellen(1000/50);
 			}
 		});
 		
@@ -81,7 +81,7 @@ public class Spiel {
 		int z;
 		z = (int) (Math.random()*500);
 		
-		if(z % 20 == 0) {
+		if(z % (500/ballRate) == 0) {
 			ballFeld.starteBall(z);
 		}
 		score += ballFeld.bewegeBaelle();

@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,17 +34,18 @@ public class GUI extends JFrame {
 	private Panel panelScoreText;
 	private Panel panelScoreNum;
 
-	private Icon pfeilIcon;
-	private Icon figurIcon;
-	private Icon figurGespanntIcon;
-	private Icon backgroundIcon;
-	private Icon ballIcon[];
+	private ImageIcon pfeilIcon;
+	private ImageIcon figurIcon;
+	private ImageIcon figurGespanntIcon;
+	private ImageIcon backgroundIcon;
+	private ImageIcon ballIcon[];
 
 	/**
 	 * Create the frame.
 	 * @throws URISyntaxException 
 	 */
 	public GUI(int width, int height, Spiel spiel) {
+		setResizable(false);
 		this.spiel = spiel;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,7 +63,7 @@ public class GUI extends JFrame {
 			e.printStackTrace();
 		}
 		
-		ballIcon = new Icon[ballong.length];
+		ballIcon = new ImageIcon[ballong.length];
 		
 		pfeilIcon = new ImageIcon(new ImageIcon(getClass().getResource("/resources/pfeil.png")).getImage().getScaledInstance(50, 10, Image.SCALE_SMOOTH));
 		figurIcon = new ImageIcon(new ImageIcon(getClass().getResource("/resources/kenny.png")).getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH));
@@ -83,6 +83,9 @@ public class GUI extends JFrame {
 			pfeil[i].setEnabled(true);
 			contentPane.add(pfeil[i]);
 		}
+		
+		setIconImage(pfeilIcon.getImage());
+		setTitle("Bogenschie\u00DFen");
 
 		figur = new JLabel();
 		figur.setBounds(100, 120, figurIcon.getIconWidth(), figurIcon.getIconHeight());
