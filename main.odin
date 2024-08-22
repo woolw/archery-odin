@@ -11,12 +11,15 @@ import "vendor:raylib"
 
 WINDOW_WIDTH :: 1050
 WINDOW_HEIGHT :: 540
-FPS_LIMIT :: 120
+FPS_LIMIT :: 60
 
 PLAYER_SPEED :: 200
 LOADED_ARROW_X :: 215
 LOADED_ARROW_Y_OFFSET :: 85
-ARROW_SPEED :: 200
+ARROW_SPEED :: 350
+ARROW_TIP_LOCATION :: raylib.Vector2{50, 5}
+BALLOON_SIZE :: raylib.Vector2{60, 60}
+SCORE_INCREMENTS :: 10
 
 main :: proc() {
 	when ODIN_DEBUG {
@@ -80,7 +83,7 @@ game :: proc() {
 		}
 	}
 	player := player {
-		pos         = {150, 20},
+		pos         = {150, 30},
 		is_idle     = true,
 		holds_arrow = false,
 	}
@@ -110,7 +113,7 @@ game :: proc() {
 
 			if raylib.IsKeyDown(.S) && player.pos.y < WINDOW_HEIGHT - 170 {
 				player.pos.y += PLAYER_SPEED * dT
-			} else if raylib.IsKeyDown(.W) && player.pos.y > 20 {
+			} else if raylib.IsKeyDown(.W) && player.pos.y > 30 {
 				player.pos.y -= PLAYER_SPEED * dT
 			}
 
@@ -159,16 +162,29 @@ game :: proc() {
 
 		{ /* score/hit actions */}
 		{
-			// TODO implement hit detection
-			// and scores as well as balloon reset to
-			// y = -50
+			header := fmt.ctprint("FPS: ", raylib.GetFPS(), " || SCORE: ", score)
+			raylib.DrawRectangle(0, 0, raylib.MeasureText(header, 30) + 10, 40, raylib.GRAY)
+			raylib.DrawText(header, 5, 5, 30, raylib.WHITE)
+
+			for a in arrows {
+				if a.x > WINDOW_WIDTH {continue}
+				for &b in balloons {
+					if (a.x + ARROW_TIP_LOCATION.x >= b.pos.x &&
+						   a.x + ARROW_TIP_LOCATION.x <= b.pos.x + BALLOON_SIZE.x &&
+						   a.y + ARROW_TIP_LOCATION.y >= b.pos.y &&
+						   a.y + ARROW_TIP_LOCATION.y <= b.pos.y + BALLOON_SIZE.y) {
+						b.pos = {550 + f32(rand.float32() * 450), -50}
+						score += SCORE_INCREMENTS
+					}
+				}
+			}
 		}
 
 		{ /* reset action */}
 		{
 			if raylib.IsKeyPressed(.R) {
 				player = {
-					pos         = {150, 20},
+					pos         = {150, 30},
 					is_idle     = true,
 					holds_arrow = false,
 				}
