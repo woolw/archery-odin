@@ -1,12 +1,10 @@
 package main
 
-import "core:c/libc"
 import "core:fmt"
 import "core:log"
 import "core:math/rand"
 import "core:mem"
 import "core:path/filepath"
-import "core:strings"
 import "vendor:raylib"
 
 WINDOW_WIDTH :: 1050
